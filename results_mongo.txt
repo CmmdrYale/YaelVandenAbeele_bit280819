@@ -1,0 +1,21 @@
+QUESTION 8
+----------
+db.bioinf_mongo_examen.find({method_of_admission:"GEL;DENTAL"})
+1
+
+QUESTION 9
+----------
+db.bioinf_mongo_examen.count({percentage_of_side_effects:{$gt:12}})
+12
+
+QUESTION 10
+-----------
+db.bioinf_mongo_examen.aggregate([{$group:{_id:"$company", avg_side_effects: { $avg: "$percentage_of_side_effects" }}},
+{$group:{_id:"$company", gt_ten: {avg_side_effects:{$gt:10}}}}])
+
+QUESTION 11
+-----------
+db.bioinf_mongo_examen.aggregate([{ $group: { _id:"$company", 
+drugs: {$count: "$drugs"}}}, {$sort: {"drugs":1}}, 
+{$group:{_id:"$company", upper_limit:{$last:"$percentage_of_side_effects"}, 
+lower_limit:{$last:"$percentage_of_side_effects"}}}])
