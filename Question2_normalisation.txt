@@ -2,10 +2,22 @@ UNF 	(PatientNumber,PatientName,Birthdate,PrescriptionNumber,Medicine,Dosage,Doc
 1NF 	database is already in 1NF
 	candidate keys: PatientNumber, PrescriptionNumber, DoctorNumber
 
+	desc: Primary keys selected based on numerical relevance.
+	PatientNumber refers to data regarding PatientName and their Birthdate
+	PrescriptionNumber is linked to PatientNumber, as it is specific per patient, but also lilnked to Medecine
+	and the corresponding dosage required.
+	DoctorNumber is related to the doctor and the assistant that works with them
+	Database is already in 1NF, as it contains distinct field names, likely to contain atomic values.
+
 2NF	(PatientNumber,PrescriptionNumber, Medecin, Dosage, DoctorNumber)
 	(PatientNumber,PatientName,Birthdate)
 	(PrescriptionNumber, Medecine, Dosage)
 	(DoctorNumber, Doctor, Assistant)
+
+	desc: Partial dependency is removed.
+	PatientNumber is kept in the main table, but will link to a seperate table containing information on patient (name and birthdate)
+	Patient details do not share any relation with doctor or the medicine/dosage itself, that's why these are also split up in 
+	separate tables.
 
 3NF	(PatientNumber,PrescriptionNumber,Medecine_ID,Dosage,DoctorNumber)
 	(PatientNumber,PatientName,Birthdate)
@@ -13,3 +25,11 @@ UNF 	(PatientNumber,PatientName,Birthdate,PrescriptionNumber,Medicine,Dosage,Doc
 	(Medecine_ID, Medecine)
 	(DoctorNumber, Doctor, Assistant_ID)
 	(Assistant_ID, Assistant)
+
+	desc: Transitive dependency is removed as a doctor can have several assistants, therefore, an extra table was created, regarding
+	the Assistant_ID and Assistant. If this were to be kept in 1 table, Assistant would've relied on Assistant_ID and not on the
+	primary key.
+	Medecine was also split into Medecine and Medecine_ID, as different types of medication can be assigned to different individuals,
+	resulting in the requirement of an identifier and type of medication. Dosage however was kept under the Prescription table,
+	as different dosages may apply to the medication administrated and is dependent on the presciption number, hinting to both dose 
+	and medication used.
