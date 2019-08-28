@@ -1,0 +1,43 @@
+QUESTION 4
+----------
+SELECT gene_id, gene_name, (seq_region_end - seq_region_start) AS size FROM gene ORDER BY size DESC LIMIT 1 OFFSET 2;
++---------+-----------+---------+
+| gene_id | gene_name | size    |
++---------+-----------+---------+
+|  118444 | PARP1     | 2493039 |
++---------+-----------+---------+
+
+QUESTION 5
+----------
+SELECT gene.gene_name, count(exon.exon_id) AS total_exons FROM gene JOIN transcript ON gene.gene_id=transcript.gene_id JOIN exon_transcript ON transcript.transcript_id = exon_transcript.transcript_id JOIN exon ON exon_transcript.exon_id = exon.exon_id GROUP BY gene.gene_name ORDER BY total_exons DESC LIMIT 1;
++-----------+-------------+
+| gene_name | total_exons |
++-----------+-------------+
+| COL11A2   |        3598 |
++-----------+-------------+
+
+QUESTION 6
+----------
+Q1: SELECT chromosome, count(gene_id) AS No_genes FROM gene WHERE description LIKE '%breast cancer%' GROUP BY chromosome ORDER BY No_genes DESC LIMIT 1;
++------------+----------+
+| chromosome | No_genes |
++------------+----------+
+| 16         |        2 |
++------------+----------+
+
+Q2: SELECT chromosome, count(transcript.transcript_id) AS transcripts FROM gene LEFT JOIN transcript ON gene.gene_id = transcript.gene_id WHERE chromosome = 16;
++------------+-------------+
+| chromosome | transcripts |
++------------+-------------+
+| 16         |        3636 |
++------------+-------------+
+
+QUESTION 7
+----------
+SELECT count(*) FROM gene JOIN transcript ON gene.gene_id = transcript.gene_id WHERE gene.biotype = transcript.biotype;
++----------+
+| count(*) |
++----------+
+|   103463 |
++----------+
+
